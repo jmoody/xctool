@@ -46,3 +46,9 @@
  */
 void ApplyDuplicateTestNameFix(NSString *testProbeClassName,
                                NSString *testCaseClassName);
+
+/**
+ Crawls the (Sen|XC)TestSuite hierarchy and returns a list of (Sen|XC)TestCase
+ objects in the order that they were found.
+ */
+NSArray *TestsFromSuite(id testSuite);
