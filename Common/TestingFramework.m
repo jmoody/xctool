@@ -16,7 +16,8 @@
 
 #import "TestingFramework.h"
 
-NSString *const kTestingFrameworkTestSuiteClassName = @"kTestingFrameworkSuiteClassName";
+NSString *const kTestingFrameworkTestCaseClassName = @"kTestingFrameworkTestCaseClassName";
+NSString *const kTestingFrameworkTestProbeClassName = @"kTestingFrameworkTestProbeClassName";
 NSString *const kTestingFrameworkIOSTestrunnerName = @"ios_executable";
 NSString *const kTestingFrameworkOSXTestrunnerName = @"osx_executable";
 NSString *const kTestingFrameworkInvertScopeKey = @"invertScope";
@@ -29,14 +30,16 @@ NSDictionary *FrameworkInfoForExtension(NSString *extension)
   dispatch_once(&onceToken, ^{
     frameworks = @{
       @"octest": @{
-        kTestingFrameworkTestSuiteClassName: @"SenTestSuite",
+        kTestingFrameworkTestCaseClassName: @"SenTestCase",
+        kTestingFrameworkTestProbeClassName: @"SenTestProbe",
         kTestingFrameworkOSXTestrunnerName: @"Tools/otest",
         kTestingFrameworkIOSTestrunnerName: @"usr/bin/otest",
         kTestingFrameworkFilterTestArgsKey: @"SenTest",
         kTestingFrameworkInvertScopeKey: @"SenTestInvertScope"
       },
       @"xctest": @{
-        kTestingFrameworkTestSuiteClassName: @"XCTestSuite",
+        kTestingFrameworkTestCaseClassName: @"XCTestCase",
+        kTestingFrameworkTestProbeClassName: @"XCTestProbe",
         kTestingFrameworkIOSTestrunnerName: @"usr/bin/xctest",
         kTestingFrameworkOSXTestrunnerName: @"usr/bin/xctest",
         kTestingFrameworkFilterTestArgsKey: @"XCTest",

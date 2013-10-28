@@ -22,13 +22,15 @@
 
 #import <Foundation/Foundation.h>
 #import <SenTestingKit/SenTestingKit.h>
+
 #import "XCTest.h"
 
-
+#import "DuplicateTestNameFix.h"
 #import "EventGenerator.h"
 #import "ParseTestName.h"
 #import "ReporterEvents.h"
 #import "Swizzle.h"
+#import "TestingFramework.h"
 
 #import "dyld-interposing.h"
 #import "dyld_priv.h"
@@ -546,6 +548,10 @@ static const char *DyldImageStateChangeHandler(enum dyld_image_states state,
       XTSwizzleSelectorForFunction(NSClassFromString(@"SenTestCase"),
                                    @selector(performTest:),
                                    (IMP)SenTestCase_performTest);
+
+      NSDictionary *frameworkInfo = FrameworkInfoForExtension(@"octest");
+      ApplyDuplicateTestNameFix([frameworkInfo objectForKey:kTestingFrameworkTestProbeClassName],
+                                [frameworkInfo objectForKey:kTestingFrameworkTestCaseClassName]);
     }
     else if (strstr(info[i].imageFilePath, "XCTest.framework") != NULL) {
       // Since the 'XCTestLog' class now exists, we can swizzle it!
@@ -567,6 +573,9 @@ static const char *DyldImageStateChangeHandler(enum dyld_image_states state,
       XTSwizzleSelectorForFunction(NSClassFromString(@"XCTestCase"),
                                    @selector(performTest:),
                                    (IMP)XCTestCase_performTest);
+      NSDictionary *frameworkInfo = FrameworkInfoForExtension(@"xctest");
+      ApplyDuplicateTestNameFix([frameworkInfo objectForKey:kTestingFrameworkTestProbeClassName],
+                                [frameworkInfo objectForKey:kTestingFrameworkTestCaseClassName]);
     }
   }
 
